@@ -1,46 +1,28 @@
-import { useEffect, useState } from 'react';
-import { useArtistAlbums } from '../hooks/useArtistAlbums'; 
+import { useState } from 'react';
+import { useArtistAlbums, useQueue, useActiveSlides } from '../hooks';
+import { debounce } from '../utils/utils';
 
-function debounce(func: any, timeout = 500) {
-  let timer: any;
-  return (...args: any) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      func.apply(null, args);
-    }, timeout);
-  };
-}
+export default function Revolver() {
+  const defaultSlides = ['please', 'select', 'an', 'artist', 'above!'];
 
-function Try2() {
   const [userPrompt, setUserPrompt] = useState('');
-  const [q, setQ] = useState([] as string[]);
-  const {
-    isLoading,
-    error,
-    data = ['please', 'select', 'an', 'artist', 'above!'],
-  } = useArtistAlbums(userPrompt);
-
-  useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setQ([...q, ...data]);
-    }
-  }, [data, setQ]);
+  const { isLoading, error, data = defaultSlides } = useArtistAlbums(userPrompt);
+  const q = useQueue(data);
+  const {slides} = useActiveSlides(q, defaultSlides);
 
   return (
-    <div >
+    <div>
       <input
         type="text"
         onChange={(e) => {
-          debounce(setUserPrompt(e.target.value));
+          debounce(setUserPrompt(e.target.value), 500);
         }}
       ></input>
       <h4>{isLoading ? 'loading...' : 'done'}</h4>
       <h4>{error}</h4>
-      <div >
-        {q}
-      </div>
+      <div>{slides.map(slide=><div key={slide}>
+        {slide}
+      </div>)}</div>
     </div>
   );
 }
-
-export default Try2;
