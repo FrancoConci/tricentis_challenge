@@ -1,4 +1,4 @@
-import { data, getFinalData } from './useArtistAlbums';
+import { getFinalData } from './useArtistAlbums';
 
 describe('getFinalData', () => {
   it('returns [] if data is null', () => {
