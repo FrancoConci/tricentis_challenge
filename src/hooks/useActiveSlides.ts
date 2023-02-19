@@ -20,11 +20,10 @@ export function useActiveSlides(q: data, defaultSlides: data) {
         }
       }
       let newSlides: string[] = [...slides!, ...[exFirstSlide!]];
-      console.log(newSlides.length);
       setSlides(newSlides);
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [q, slides, slides, setSlides]);
-  return { slides };
+  }, [q, slides, setSlides]);
+  return slides;
 }

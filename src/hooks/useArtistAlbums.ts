@@ -53,7 +53,9 @@ export const useArtistAlbums = (userPrompt: string) => {
         setError(null);
       } catch (error: any) {
         // here i could go over the https response codes...
-        setError('There was a generic error');
+        if(error?.code !== "ERR_CANCELED") {
+          setError('There was a generic error');
+        }
       } finally {
         setIsLoading(false);
       }
