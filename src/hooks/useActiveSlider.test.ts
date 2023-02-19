@@ -1,4 +1,4 @@
-import { getFinalData } from './useArtistAlbums';
+import { getFinalData } from './useActiveSlides';
 
 describe('getFinalData', () => {
   it('returns [] if data is null', () => {
